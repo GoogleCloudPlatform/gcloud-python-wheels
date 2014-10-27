@@ -1,0 +1,12 @@
+language: python
+
+before_install:
+  - export WHEELHOUSE=${HOME}/wheelhouse
+
+install:
+   # Needed to build wheels.
+   - pip install tox
+   - pip install wheel
+
+script:
+  - ./try_update_wheelhouse.sh
