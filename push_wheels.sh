@@ -31,10 +31,10 @@ git config --global user.email "travis@travis-ci.org"
 git config --global user.name "travis-ci"
 git clone --quiet --branch=master \
     "https://${GH_OAUTH_TOKEN}@github.com//${GH_OWNER}/${GH_PROJECT_NAME}" \
-    ${FRESH_REPO_DIR}
+    "${FRESH_REPO_DIR}"
 # NOTE: Assumes ${GH_OAUTH_TOKEN}, ${GH_OWNER} and ${GH_PROJECT_NAME} are
 #       set in Travis build settings for project.
-cd ${FRESH_REPO_DIR}
+cd "${FRESH_REPO_DIR}"
 
 ###############################################
 # (Optionally) make wheelhouse in fresh repo. #
@@ -53,11 +53,15 @@ NEW_WHEELS=$(comm -13 <(ls -b wheelhouse/) <(ls -b "${WHEELHOUSE}"))
 #####################################
 # Add new wheels to the wheelhouse. #
 #####################################
+# NOTE: We explicitly don't use "set -e" because we allow "git add"
+#       below to fail on ignored files.
+set +e
 for NEW_WHEEL in ${NEW_WHEELS}
 do
   cp "${WHEELHOUSE}/${NEW_WHEEL}" wheelhouse/
   git add "wheelhouse/${NEW_WHEEL}"
 done
+set -e
 
 ##########################################
 # Remove old wheels from the wheelhouse. #
@@ -72,7 +76,11 @@ done
 # Display git status and push wheels. #
 #######################################
 git status
-# H/T: http://stackoverflow.com/a/13730477/1068170
-git commit -m "Latest wheels build by travis-ci. [ci skip]"
-git status
-git push origin master
+# H/T: http://stackoverflow.com/a/5139346/1068170
+if [[ -n "$(git status --porcelain)" ]]; then
+  git commit -m "Latest wheels build by travis-ci. [ci skip]"
+  git status
+  git push origin master
+else
+  echo "Nothing to commit. Exiting without pushing changes."
+fi
