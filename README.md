@@ -181,7 +181,8 @@ To do this:
    travis env set REPO_BRANCH "${REPO_BRANCH}" --repo "${GH_OWNER}/${GH_PROJECT_NAME}"
    travis env set CODEBASE_DIR "${CODEBASE_DIR}" --repo "${GH_OWNER}/${GH_PROJECT_NAME}"
    travis env set PIP_INSTALL "${PIP_INSTALL}" --repo "${GH_OWNER}/${GH_PROJECT_NAME}"
-   travis env set EXTRA_TOX_ENVS "${EXTRA_TOX_ENVS}" --repo "${GH_OWNER}/${GH_PROJECT_NAME}"
+   # Make EXTRA_TOX_ENVS public since it may change.
+   travis env set --public EXTRA_TOX_ENVS "${EXTRA_TOX_ENVS}" --repo "${GH_OWNER}/${GH_PROJECT_NAME}"
    # Variables used to git commit and push new wheels.
    travis env set FRESH_REPO_DIR "${FRESH_REPO_DIR}" --repo "${GH_OWNER}/${GH_PROJECT_NAME}"
    ```
