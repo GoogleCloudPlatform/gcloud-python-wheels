@@ -1,9 +1,9 @@
 gcloud-python-wheels
 ====================
 
-Generation and storage of Python [wheels][1] for building
+[Generation and storage of Python](https://cloud.google.com/appengine/docs/python/endpoints/gen_clients) [wheels][1] for building
 [`gcloud-python`][2] on [Travis][3]. This allows use of `tox`
-environments without excessively slow builds.
+environments without excessively slow builds on [Google Cloud Platform](https://cloud.google.com/).
 
 Inspired by the proof-of-concept [`pelson/travis-wheels`][4].
 
